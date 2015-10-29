@@ -82,6 +82,7 @@
                                             <outlet property="progressBar" destination="of1-5n-3tF" id="Pes-b2-C8x"/>
                                             <outlet property="progressBarSize" destination="gRL-f8-GnN" id="LPJ-VD-Wco"/>
                                             <outlet property="selectedBackground" destination="wKG-0M-Mm1" id="1Py-P8-lfw"/>
+                                            <segue destination="BYZ-38-t0r" kind="show" identifier="goToSetList" id="eqw-yG-McD"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
