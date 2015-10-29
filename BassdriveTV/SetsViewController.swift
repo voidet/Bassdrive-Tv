@@ -24,7 +24,6 @@ class SetsViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var downloadedSets:[BassdriveSet]?
 
     dynamic var loadingSets:Bool = false
-    let refreshControl = UIRefreshControl()
     
     @IBOutlet var tableView:UITableView!
     @IBOutlet var loadingView:UIView!
@@ -54,12 +53,6 @@ class SetsViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 }
             }
         
-        self.refreshControl.tintColor = UIColor(hex:"#FF36C1")
-        self.refreshControl.rx_controlEvents(.ValueChanged)
-            .subscribeNext {
-                self.restoreAndRefreshSets()
-            }
-        self.tableView.addSubview(refreshControl)
         self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 50, 0)
     }
     
@@ -82,13 +75,12 @@ class SetsViewController: UIViewController, UITableViewDataSource, UITableViewDe
             self.tableView.reloadData()
         }
         
-        Alamofire.request(.GET, self.requestURL).responseJSON { _, _, responseJSON in
+        Alamofire.request(.GET, self.requestURL).responseJSON { responseJSON in
             self.loadingSets = false
-            self.refreshControl.endRefreshing()
-            if let sets = responseJSON.value as? Dictionary<String, AnyObject> {
+            if let sets = responseJSON.result.value {
                 self.sets = JSON(sets)
-                NSUserDefaults.standardUserDefaults().setObject(responseJSON.value, forKey: "sets")
-                NSUserDefaults.standardUserDefaults().synchronize()
+//                NSUserDefaults.standardUserDefaults().setObject(sets, forKey: "sets")
+//                NSUserDefaults.standardUserDefaults().synchronize()
                 self.tableView.reloadData()
             }
         }
